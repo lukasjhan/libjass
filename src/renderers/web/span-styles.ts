@@ -32,6 +32,7 @@ import { Style } from "../../types/style";
 import { Dialogue } from "../../types/dialogue";
 
 import { Map } from "../../utility/map";
+import { BorderStyle } from "../../types/misc";
 
 /**
  * This class represents the style attribute of a span.
@@ -247,6 +248,10 @@ export class SpanStyles {
 
 		const filterWrapperSpan = document.createElement("span");
 		filterWrapperSpan.appendChild(span);
+	
+		if (this._defaultStyle.borderStyle === BorderStyle.OpaqueBox){
+			filterWrapperSpan.style.background = this._defaultStyle.shadowColor.toString();
+		}
 
 		let primaryColor = this._primaryColor.withAlpha(this._primaryAlpha);
 		let outlineColor = this._outlineColor.withAlpha(this._outlineAlpha);
