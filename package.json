@@ -1,6 +1,6 @@
 {
 	"name": "@voyagerx/libjass",
-	"version": "0.11.1",
+	"version": "0.11.2",
 	"description": "A library to render ASS subtitles on HTML5 video in the browser.",
 	"keywords": [
 		"browser",
@@ -23,6 +23,7 @@
 	"main": "lib/libjass.js",
 	"scripts": {
 		"prepublish": "node ./build.js clean default",
+                "publish": "npm publish --access public",
 		"build": "./node_modules/typescript/bin/tsc ./build/typescript/index.ts ./build/doc.ts ./build/node.d.ts ./build/typescript/typescript.d.ts ./node_modules/async-build/typings.d.ts -m commonjs -t es5 -noImplicitAny --moduleResolution classic",
 		"test": "node ./build.js test",
 		"test-lib": "intern-client config=tests/intern reporters=Pretty",
