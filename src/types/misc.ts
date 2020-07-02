@@ -43,7 +43,7 @@ export enum WrappingStyle {
  */
 export enum BorderStyle {
 	Outline = 1,
-	OpaqueBox = 3,
+	OpaqueBox = 4,
 }
 
 /**
