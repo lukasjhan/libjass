@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { valueOrDefault, BorderStyle } from "./misc";
+import { valueOrDefault, BorderStyle, ASS_UNDEFINED_LINE_HEIGHT_RATIO } from "./misc";
 
 import { parse } from "../parser/parse";
 
@@ -84,6 +84,8 @@ export class Style {
 	private _marginRight: number;
 	private _marginVertical: number;
 
+	private _lineHeightRatio: number;
+
 	constructor(template: Map<string, string>) {
 		{
 			const normalizedTemplate = new Map<string, string>();
@@ -129,6 +131,8 @@ export class Style {
 		this._marginLeft = valueOrDefault(template, "marginl", parseFloat, value => !isNaN(value), "20");
 		this._marginRight = valueOrDefault(template, "marginr", parseFloat, value => !isNaN(value), "20");
 		this._marginVertical = valueOrDefault(template, "marginv", parseFloat, value => !isNaN(value), "20");
+
+		this._lineHeightRatio = valueOrDefault(template, "lineHeightRatio", parseFloat, value => !isNaN(value), ASS_UNDEFINED_LINE_HEIGHT_RATIO.toString());
 	}
 
 	/**
@@ -327,5 +331,14 @@ export class Style {
 	 */
 	get marginVertical(): number {
 		return this._marginVertical;
+	}
+
+	/**
+	 * The line height ratio of this style's font.
+	 *
+	 * @type {number}
+	 */
+	get lineHeightRatio(): number {
+		return this._lineHeightRatio;
 	}
 }

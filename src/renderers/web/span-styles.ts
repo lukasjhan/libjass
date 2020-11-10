@@ -32,7 +32,7 @@ import { Style } from "../../types/style";
 import { Dialogue } from "../../types/dialogue";
 
 import { Map } from "../../utility/map";
-import { BorderStyle } from "../../types/misc";
+import { ASS_UNDEFINED_LINE_HEIGHT_RATIO, BorderStyle } from "../../types/misc";
 
 /**
  * This class represents the style attribute of a span.
@@ -64,6 +64,7 @@ export class SpanStyles {
 
 	private _fontName: string;
 	private _fontSize: number;
+	private _lineHeightRatio: number;
 
 	private _fontScaleX: number;
 	private _fontScaleY: number;
@@ -122,6 +123,7 @@ export class SpanStyles {
 
 		this.fontName = newStyle.fontName;
 		this.fontSize = newStyle.fontSize;
+		this.lineHeightRatio = newStyle.lineHeightRatio;
 
 		this.fontScaleX = newStyle.fontScaleX;
 		this.fontScaleY = newStyle.fontScaleY;
@@ -169,9 +171,14 @@ export class SpanStyles {
 		else if (this._bold !== false) {
 			fontStyleOrWeight += this._bold + " ";
 		}
+
+		const scaledFontSize = this._fontSize * (isTextOnlySpan ? this._fontScaleX : 1)
+		const calculatedFontSize = this._lineHeightRatio != ASS_UNDEFINED_LINE_HEIGHT_RATIO && this._lineHeightRatio > 0
+			? scaledFontSize / this._lineHeightRatio 
+			: fontSizeForLineHeight(this._fontName, scaledFontSize, this._settings.fallbackFonts, this._fontSizeElement, this._fontMetricsCache)
 		const fontSize = (
 			this._scaleY *
-			fontSizeForLineHeight(this._fontName, this._fontSize * (isTextOnlySpan ? this._fontScaleX : 1), this._settings.fallbackFonts, this._fontSizeElement, this._fontMetricsCache)
+			calculatedFontSize
 		).toFixed(3);
 		const lineHeight = (this._scaleY * this._fontSize).toFixed(3);
 
@@ -694,6 +701,24 @@ export class SpanStyles {
 	 */
 	set fontSize(value: number) {
 		this._fontSize = SpanStyles._valueOrDefault(value, this._defaultStyle.fontSize);
+	}
+
+	/**
+	 * Gets the font line height ratio property.
+	 *
+	 * @type {number}
+	 */
+	get lineHeightRatio() {
+		return this._lineHeightRatio;
+	}
+
+	/**
+	 * Sets the font line height ratio property. null defaults it to the default style's value.
+	 *
+	 * @type {?number}
+	 */
+	set lineHeightRatio(value: number) {
+		this._lineHeightRatio = SpanStyles._valueOrDefault(value, this._defaultStyle.lineHeightRatio);
 	}
 
 	/**
