@@ -38,7 +38,7 @@ import { debugMode } from "../../settings";
 import { ASS } from "../../types/ass";
 import { AttachmentType } from "../../types/attachment";
 import { Dialogue } from "../../types/dialogue";
-import { WrappingStyle } from "../../types/misc";
+import { BorderStyle, WrappingStyle } from "../../types/misc";
 
 import { mixin } from "../../utility/mixin";
 import { Map } from "../../utility/map";
@@ -374,6 +374,13 @@ export class WebRenderer extends NullRenderer implements EventSource<string> {
 		sub.style.marginTop = sub.style.marginBottom = `${ (this._scaleY * dialogue.style.marginVertical).toFixed(3) }px`;
 		sub.style.minWidth = `${ (this._subsWrapperWidth - this._scaleX * (dialogue.style.marginLeft + dialogue.style.marginRight)).toFixed(3) }px`;
 
+		const backgroundSpan = document.createElement("span");
+		if (dialogue.style.borderStyle === BorderStyle.OpaqueBox){
+			backgroundSpan.style.background = dialogue.style.shadowColor.toString();
+			backgroundSpan.style.display = "inline-block";
+		}
+		sub.appendChild(backgroundSpan);
+
 		const dialogueAnimationStylesElement = document.createElement("style");
 		dialogueAnimationStylesElement.id = `libjass-animation-styles-${ this.id }-${ dialogue.id }`;
 		dialogueAnimationStylesElement.type = "text/css";
@@ -397,7 +404,7 @@ export class WebRenderer extends NullRenderer implements EventSource<string> {
 		let previousAddNewLine = false; // If two or more \N's are encountered in sequence, then all but the first will be created using currentSpanStyles.makeNewLine() instead
 		const startNewSpan = (addNewLine: boolean): void => {
 			if (currentSpan !== null && currentSpan.hasChildNodes()) {
-				sub.appendChild(currentSpanStyles.setStylesOnSpan(currentSpan, currentAnimationCollection));
+				backgroundSpan.appendChild(currentSpanStyles.setStylesOnSpan(currentSpan, currentAnimationCollection));
 			}
 
 			if (currentAnimationCollection !== null) {
@@ -406,10 +413,10 @@ export class WebRenderer extends NullRenderer implements EventSource<string> {
 
 			if (addNewLine) {
 				if (previousAddNewLine) {
-					sub.appendChild(currentSpanStyles.makeNewLine());
+					backgroundSpan.appendChild(currentSpanStyles.makeNewLine());
 				}
 				else {
-					sub.appendChild(document.createElement("br"));
+					backgroundSpan.appendChild(document.createElement("br"));
 				}
 			}
 
