@@ -47,6 +47,11 @@ export enum BorderStyle {
 }
 
 /**
+ * The default line height ratio when it is undefined.
+ */
+export const ASS_UNDEFINED_LINE_HEIGHT_RATIO = -1;
+
+/**
  * A property.
  */
 export interface Property {
