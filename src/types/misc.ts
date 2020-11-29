@@ -52,6 +52,11 @@ export enum BorderStyle {
 export const ASS_UNDEFINED_LINE_HEIGHT_RATIO = -1;
 
 /**
+ * The space character(&ensp;) for padding in opaque box
+ */
+export const ASS_CAPTION_PADDING_SPACE_CHAR = '\u2002';
+
+/**
  * A property.
  */
 export interface Property {
