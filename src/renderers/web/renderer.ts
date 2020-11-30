@@ -790,16 +790,17 @@ export class WebRenderer extends NullRenderer implements EventSource<string> {
 			}
 
 			else if (part instanceof parts.Text) {
-				const firstSpaceElement = document.createElement("nobr");
-				firstSpaceElement.appendChild(document.createTextNode(ASS_CAPTION_PADDING_SPACE_CHAR));
-				const endSpaceElement = document.createElement("nobr");
-				endSpaceElement.appendChild(document.createTextNode(ASS_CAPTION_PADDING_SPACE_CHAR));
-				
-				currentSpan.appendChild(firstSpaceElement)
-				currentSpan.appendChild(document.createTextNode(part.value))
-				currentSpan.appendChild(endSpaceElement)
-				currentSpan.appendChild(document.createTextNode("\u200C"))
+				if (part.value.length > 0) {
+					const firstCharacter = part.value.charAt(0);
+					const restContent = part.value.slice(1);
+					const firstSpaceElement = document.createElement("nobr");
+					firstSpaceElement.appendChild(document.createTextNode(ASS_CAPTION_PADDING_SPACE_CHAR + firstCharacter));
+					
+					currentSpan.appendChild(firstSpaceElement);
+					currentSpan.appendChild(document.createTextNode(restContent + ASS_CAPTION_PADDING_SPACE_CHAR));
+				}
 
+				currentSpan.appendChild(document.createTextNode("\u200C"));
 				startNewSpan(false);
 			}
 
