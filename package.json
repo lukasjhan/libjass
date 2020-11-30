@@ -1,6 +1,6 @@
 {
 	"name": "@voyagerx/libjass",
-	"version": "0.12.4",
+	"version": "0.12.5",
 	"description": "A library to render ASS subtitles on HTML5 video in the browser.",
 	"keywords": [
 		"browser",
