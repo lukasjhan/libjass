@@ -38,7 +38,7 @@ import { debugMode } from "../../settings";
 import { ASS } from "../../types/ass";
 import { AttachmentType } from "../../types/attachment";
 import { Dialogue } from "../../types/dialogue";
-import { BorderStyle, WrappingStyle } from "../../types/misc";
+import { ASS_CAPTION_PADDING_SPACE_CHAR, BorderStyle, WrappingStyle } from "../../types/misc";
 
 import { mixin } from "../../utility/mixin";
 import { Map } from "../../utility/map";
@@ -790,7 +790,16 @@ export class WebRenderer extends NullRenderer implements EventSource<string> {
 			}
 
 			else if (part instanceof parts.Text) {
-				currentSpan.appendChild(document.createTextNode(part.value + "\u200C"));
+				const firstSpaceElement = document.createElement("nobr");
+				firstSpaceElement.appendChild(document.createTextNode(ASS_CAPTION_PADDING_SPACE_CHAR));
+				const endSpaceElement = document.createElement("nobr");
+				endSpaceElement.appendChild(document.createTextNode(ASS_CAPTION_PADDING_SPACE_CHAR));
+				
+				currentSpan.appendChild(firstSpaceElement)
+				currentSpan.appendChild(document.createTextNode(part.value))
+				currentSpan.appendChild(endSpaceElement)
+				currentSpan.appendChild(document.createTextNode("\u200C"))
+
 				startNewSpan(false);
 			}
 
